@@ -48,8 +48,7 @@ Second approach
 
 A\*12 + edx + AAAA + ebp + eip
 
-```
-strcpy
+```sh
 Breakpoint 9, 0x0804931f in password_prompt ()
 #0 0x0804931f in password_prompt ()
 #1 0x080492a2 in get_user_id ()
